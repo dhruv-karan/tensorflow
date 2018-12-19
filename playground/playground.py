@@ -58,6 +58,19 @@ with tf.Session() as ses:
     mul_result = ses.run(op_mul,feed_dict={a:rand_a,b:rand_b})
     print(mul_result)
 
+#================ making psudo nutral network =============
+n_features = 10
+dense_layer = 3
+X = tf.placeholder(tf.float32,(None, n_features))
+W = tf.Variable(tf.random_normal([n_features,dense_layer]))
+b = tf.Variable(tf.ones([dense_layer]))
+WX = tf.matmul(X,W)
+z = tf.add(WX,b)
+a = tf.sigmoid(z)
 
+iinit = tf.global_variables_initializer()
 
-
+with tf.Session() as ii:
+    ii.run(iinit)
+    layer_out = ii.run(a,feed_dict={X: np.random.random([1,n_features])})
+    print(layer_out)
