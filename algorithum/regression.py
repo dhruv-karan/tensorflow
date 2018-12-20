@@ -17,3 +17,20 @@ for x,y in zip(x_label,y_label):
     error += (y-y_hat)**2 
     
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+train = optimizer.minimize(error)
+
+init = tf.global_variables_initializer()
+
+with tf.Session() as sass:
+    sass.run(init)
+    training_steps =100
+    for i in range(training_steps):
+        sass.run(train)
+    final_slop,final_intersept = sass.run([m,b])
+
+x_test = np.linspace(-1,11,10)
+#y= mx+c
+y_pred_plot = final_slop*x_test + final_intersept
+
+plt.plot(x_test,y_pred_plot,'r')
+plt.plot(x_label,y_label,'*')
