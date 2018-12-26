@@ -29,8 +29,14 @@ y_true = tf.placeholder(tf.float32,shape=[None,10])
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_true,logits=y))
 
 #optimizer
-optimizer = tf.train.GradientDescentOptimizer(learing_rate=0.5)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.5)
 train = optimizer.minimize(cross_entropy)
 
 #crate Tensorflow session
-init = tf.global_varaiables_initializer()
+init = tf.global_variables_initializer()
+
+with tf.Session() as sass:
+    sass.run(init)
+    for step in range(1000):
+        batch_x,batch_y = mnist.train.next_batch(100)
+        
