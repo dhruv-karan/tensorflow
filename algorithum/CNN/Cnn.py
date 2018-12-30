@@ -16,9 +16,9 @@ plt.imshow(single_image,cmap='gist_gray')
 #tesnorflow 
 
 #Placeholders
-x = tf.placeholder(tf.float32,shape=[None,786])
+x = tf.placeholder(tf.float32,shape=[None,784])
 #Varaiable
-w = tf.Variable(tf.zeros([786,10]))
+w = tf.Variable(tf.zeros([784,10]))
 b = tf.Variable(tf.zeros([10]))
 #Create graph
 y= tf.matmul(x,w) +b
@@ -38,5 +38,14 @@ init = tf.global_variables_initializer()
 with tf.Session() as sass:
     sass.run(init)
     for step in range(1000):
+        # most tricky part of the question
         batch_x,batch_y = mnist.train.next_batch(100)
+        sass.run(train,feed_dict={x:batch_x,y_true:batch_y})
         
+    #evaluating the model
+    correct_prediction = tf.equal(tf.argmax(y,1),tf.argmax(y_true,1))
+    #converting boolen to float
+    acc=tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
+    
+    print(sass.run(acc,feed_dict={x:mnist.test.images,y_true:mnist.test.labels}))
+    
